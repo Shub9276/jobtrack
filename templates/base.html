@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}JobTrack{% endblock %}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f4f6f8;
+      }
+      nav {
+        background: #1f2937;
+        padding: 14px 24px;
+      }
+      nav a {
+        color: white;
+        text-decoration: none;
+        margin-right: 18px;
+      }
+      main {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 0 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <nav>
+        <a href="{% url 'home' %}">JobTrack</a>
+        {% if user.is_authenticated %}
+        <span style="color: white"
+          ><a href="{% url 'application_list' %}">My Applications</a>
+          Hi, {{user.username }}</span
+        >
+        <form method="post" action="{% url 'logout' %}" style="display: inline">
+          {% csrf_token %}
+          <button type="submit">Logout</button>
+        </form>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'signup' %}">Sign up</a>
+        {% endif %}
+      </nav>
+    </nav>
+    <main>{% block content %}{% endblock %}</main>
+  </body>
+</html>
