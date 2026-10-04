@@ -19,22 +19,15 @@
     value="{{ query }}"
   />
   <select name="status">
-    <option value="">All statuses</option>
-    {% for value, label in status_choices %}
-    <option
-      value="{{ value }}"
-      {%
-      if
-      value=""
-      ="selected_status"
-      %}selected{%
-      endif
-      %}
-    >
-      {{ label }}
-    </option>
-    {% endfor %}
-  </select>
+  <option value="">All statuses</option>
+  {% for value, label in status_choices %}
+    {% if value == selected_status %}
+      <option value="{{ value }}" selected>{{ label }}</option>
+    {% else %}
+      <option value="{{ value }}">{{ label }}</option>
+    {% endif %}
+  {% endfor %}
+</select>
   <button type="submit">Filter</button>
   <a href="{% url 'application_list' %}">Clear</a>
 </form>
