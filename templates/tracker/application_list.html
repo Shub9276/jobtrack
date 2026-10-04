@@ -1,25 +1,38 @@
-{% extends "base.html" %}
-
-{% block title %}My Applications - JobTrack{% endblock %}
-
+{% extends "base.html" %} {% block title %}My Applications - JobTrack{% endblock%} 
 {% block content %}
 <h1>My Applications</h1>
 <p><a href="{% url 'application_add' %}">+ Add application</a></p>
 
 <p>
-  Total: <strong>{{ stats.total }}</strong> |
-  Applied: <strong>{{ stats.applied }}</strong> |
-  Interview: <strong>{{ stats.interview }}</strong> |
-  Offer: <strong>{{ stats.offer }}</strong> |
-  Rejected: <strong>{{ stats.rejected }}</strong>
+  Total: <strong>{{ stats.total }}</strong> | Applied:
+  <strong>{{ stats.applied }}</strong> | Interview:
+  <strong>{{ stats.interview }}</strong> | Offer:
+  <strong>{{ stats.offer }}</strong> | Rejected:
+  <strong>{{ stats.rejected }}</strong>
 </p>
 
 <form method="get">
-  <input type="text" name="q" placeholder="Search company or role" value="{{ query }}">
+  <input
+    type="text"
+    name="q"
+    placeholder="Search company or role"
+    value="{{ query }}"
+  />
   <select name="status">
     <option value="">All statuses</option>
     {% for value, label in status_choices %}
-    <option value="{{ value }}" {% if value == selected_status %}selected{% endif %}>{{ label }}</option>
+    <option
+      value="{{ value }}"
+      {%
+      if
+      value=""
+      ="selected_status"
+      %}selected{%
+      endif
+      %}
+    >
+      {{ label }}
+    </option>
     {% endfor %}
   </select>
   <button type="submit">Filter</button>
@@ -39,7 +52,18 @@
   <tr>
     <td>{{ app.company }}</td>
     <td>{{ app.role }}</td>
-    <td>{{ app.get_status_display }}</td>
+    <td>
+      <form method="post" action="{% url 'application_set_status' app.pk %}">
+        {% csrf_token %}
+        <select name="status" onchange="this.form.submit()">
+          {% for value, label in status_choices %} {% if value == app.status %}
+          <option value="{{ value }}" selected>{{ label }}</option>
+          {% else %}
+          <option value="{{ value }}">{{ label }}</option>
+          {% endif %} {% endfor %}
+        </select>
+      </form>
+    </td>
     <td>{{ app.date_applied }}</td>
     <td>
       <a href="{% url 'application_edit' app.pk %}">Edit</a>

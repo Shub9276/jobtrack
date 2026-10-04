@@ -6,7 +6,7 @@ from .forms import ApplicationForm
 from .models import Application
 from django.db.models import Q
 from django.core.paginator import Paginator
-
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 def home(request):
@@ -79,6 +79,18 @@ def application_add(request):
     return render(request, "tracker/application_form.html", {"form":form})
 
 
+@login_required
+@require_POST
+def application_set_status(request, pk):
+    application = get_object_or_404(Application, pk=pk, user=request.user)
+    new_status = request.POST.get("status")
+    valid_statuses = [value for value, label in Application.STATUS_CHOICES]
+    if new_status in valid_statuses:
+        application.status = new_status
+        application.save()
+    return redirect("application_list")
+
+    
 @login_required
 def application_edit(request, pk):
     application = get_object_or_404(Application, pk = pk , user = request.user)
