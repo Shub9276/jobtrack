@@ -7,6 +7,7 @@ from .models import Application
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_POST
+from .matcher import match_resume
 
 # Create your views here.
 def home(request):
@@ -113,3 +114,16 @@ def application_delete(request, pk):
         return redirect("application_list")
     
     return render(request,"tracker/application_confirm_delete.html",{"application":application})
+
+
+@login_required
+def match_view(request):
+    result = None
+    resume_text = ""
+    job_text = ""
+    if request.method == "POST":
+        resume_text = request.POST.get("resume_text","")
+        job_text = request.POST.get("job_text","")
+        result = match_resume(resume_text, job_text)
+    context = {"result": result, "resume_text": resume_text, "job_text": job_text}
+    return render(request,"tracker/match.html",context)

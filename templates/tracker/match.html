@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} Match a job - JobTrack {% endblock %}
+
+{% block content %}
+<h1>Resume match</h1>
+<p>Paste your resume and a job description to see how many of the job's keywords your resume covers.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <p>
+        <label>Your resume text</label><br>
+        <textarea name="resume_text" rows="8" cols="70">{{ resume_text}}</textarea>
+    </p>
+    <p>
+        <label>Job description</label><br>
+        <textarea name="job_text" rows="8" cols="70">{{ job_text }}</textarea>
+    </p>
+    <button type="submit">Check match</button>
+</form>
+
+{% if result %}
+<h2>Match : {{ result.score }}%</h2>
+{% endif %}
+<h3>Missing keywords</h3>
+{% if result.missing %}
+<p>{{ result.missing|join:", "}}</p>
+{% else %}
+<p>Nothing missing. Your resume covers every keyword.</p>
+
+<h3>Matched keywords</h3>
+<p>{{ result.matched }}</p>
+{% endif %}
+{% endblock %}

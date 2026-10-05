@@ -32,9 +32,10 @@
         <a href="{% url 'home' %}">JobTrack</a>
         {% if user.is_authenticated %}
         <span style="color: white"
-          ><a href="{% url 'application_list' %}">My Applications</a>
-          Hi, {{user.username }}</span
+          ><a href="{% url 'application_list' %}">My Applications</a> Hi,
+          {{user.username }}</span
         >
+        <a href="{% url 'match' %}">Match a job</a>
         <form method="post" action="{% url 'logout' %}" style="display: inline">
           {% csrf_token %}
           <button type="submit">Logout</button>

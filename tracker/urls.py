@@ -9,4 +9,5 @@ urlpatterns = [
     path('applications/<int:pk>/edit/',views.application_edit, name = 'application_edit'),
     path('applications/<int:pk>/delete/',views.application_delete, name = "application_delete"),
     path('applications/<int:pk>/status/', views.application_set_status, name='application_set_status'),
+    path('match/', views.match_view, name='match'),
 ]
